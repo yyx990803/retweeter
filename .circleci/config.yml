@@ -29,6 +29,10 @@ jobs:
 workflows:
   version: 2
 
+  test:
+    jobs:
+      - retweet
+
   poll:
     triggers:
       - schedule:

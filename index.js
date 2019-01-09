@@ -15,7 +15,7 @@ const matchRegex = new RegExp(process.env.TWEET_MATCH)
   try {
     const latest = await client.get('/statuses/user_timeline', {
       screen_name: process.env.TARGET_USERNAME,
-      count: parseInt(process.env.POLL_COUNT, 10),
+      count: parseInt(process.env.POLL_COUNT || 10, 10),
       include_rts: false
     })
 
