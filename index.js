@@ -9,36 +9,47 @@ const client = new Twitter({
   access_token_secret: process.env.ACCESS_TOKEN_SECRET
 })
 
-const matchRegex = new RegExp(process.env.TWEET_MATCH)
+const usernames = process.env.TARGET_USERNAME.split(',')
+const regexes = process.env.TWEET_MATCH.split(',').map(re => new RegExp(re))
+
+async function retweet(username, regex) {
+  const latest = await client.get('/statuses/user_timeline', {
+    screen_name: username,
+    count: parseInt(process.env.POLL_COUNT || 10, 10),
+    include_rts: false
+  })
+
+  for (const tweet of latest) {
+    if (regex.test(tweet.text)) {
+      console.log('Matched tweet:')
+      console.log({
+        text: tweet.text,
+        created_at: tweet.created_at,
+        id: tweet.id_str
+      })
+      await client.post(`/statuses/retweet/${tweet.id_str}`, {})
+      break
+    }
+  }
+}
 
 ;(async () => {
-  try {
-    const latest = await client.get('/statuses/user_timeline', {
-      screen_name: process.env.TARGET_USERNAME,
-      count: parseInt(process.env.POLL_COUNT || 10, 10),
-      include_rts: false
-    })
-
-    for (const tweet of latest) {
-      if (matchRegex.test(tweet.text)) {
-        console.log('Matched tweet:')
-        console.log({
-          text: tweet.text,
-          created_at: tweet.created_at,
-          id: tweet.id_str
-        })
-        await client.post(`/statuses/retweet/${tweet.id_str}`, {})
-        break
+  let hasError = false
+  for (let i = 0; i < usernames.length; i++) {
+    try {
+      await retweet(usernames[i], regexes[i])
+    } catch (e) {
+      const { code } = e[0]
+      if (code !== 327) {
+        console.log('Error encountered!')
+        console.log(e)
+        hasError = true
+      } else {
+        console.log('Already retweeted.')
       }
     }
-  } catch (e) {
-    const { code } = e[0]
-    if (code !== 327) {
-      console.log('Error encountered!')
-      console.log(e)
-      process.exit(1)
-    } else {
-      console.log('Already retweeted.')
-    }
+  }
+  if (hasError) {
+    process.exit(1)
   }
 })()
