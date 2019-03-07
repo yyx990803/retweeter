@@ -16,27 +16,28 @@ async function retweet(username, regex) {
   const latest = await client.get('/statuses/user_timeline', {
     screen_name: username,
     count: parseInt(process.env.POLL_COUNT || 10, 10),
-    include_rts: false
+    include_rts: false,
+    tweet_mode: 'extended'
   })
 
   let hasMatch = false
   for (const tweet of latest) {
-    if (regex.test(tweet.text)) {
+    if (regex.test(tweet.full_text)) {
       hasMatch = true
       console.log()
       console.log('!!! Matched tweet !!!')
       console.log({
-        text: tweet.text,
+        text: tweet.full_text,
         created_at: tweet.created_at,
         id: tweet.id_str
       })
       console.log()
       await client.post(`/statuses/retweet/${tweet.id_str}`, {})
       break
-    } else {
+    } else if (!process.env.CI) {
       console.log()
       console.log('Non-matching tweet:')
-      console.log(tweet.text)
+      console.log(tweet.full_text)
       console.log()
     }
   }
