@@ -35,7 +35,7 @@ async function retweet(username, regex) {
   }
 
   if (!hasMatch) {
-    console.log(`No matching tweets from @${username} with regex ${regex.source}`.)
+    console.log(`No matching tweets from @${username} with regex ${regex.source}.`)
   }
 }
 
