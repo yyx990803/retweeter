@@ -44,7 +44,7 @@ async function retweet(username, regex) {
   for (let i = 0; i < usernames.length; i++) {
     try {
       await retweet(usernames[i], regexes[i])
-    } catch (e) {g
+    } catch (e) {
       if (!Array.isArray(e) || e[0].code !== 327) {
         console.log('Error encountered!')
         console.log(e)
