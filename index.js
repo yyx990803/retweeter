@@ -19,8 +19,10 @@ async function retweet(username, regex) {
     include_rts: false
   })
 
+  let hasMatch = false
   for (const tweet of latest) {
     if (regex.test(tweet.text)) {
+      hasMatch = true
       console.log('Matched tweet:')
       console.log({
         text: tweet.text,
@@ -31,6 +33,10 @@ async function retweet(username, regex) {
       break
     }
   }
+
+  if (!hasMatch) {
+    console.log(`No matching tweets from @${username} with regex ${regex.source}`.)
+  }
 }
 
 ;(async () => {
@@ -39,8 +45,7 @@ async function retweet(username, regex) {
     try {
       await retweet(usernames[i], regexes[i])
     } catch (e) {
-      const { code } = e[0]
-      if (code !== 327) {
+      if (!Array.isArray(e) || e[0].code !== 327) {
         console.log('Error encountered!')
         console.log(e)
         hasError = true
