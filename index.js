@@ -23,14 +23,21 @@ async function retweet(username, regex) {
   for (const tweet of latest) {
     if (regex.test(tweet.text)) {
       hasMatch = true
-      console.log('Matched tweet:')
+      console.log()
+      console.log('!!! Matched tweet !!!')
       console.log({
         text: tweet.text,
         created_at: tweet.created_at,
         id: tweet.id_str
       })
+      console.log()
       await client.post(`/statuses/retweet/${tweet.id_str}`, {})
       break
+    } else {
+      console.log()
+      console.log('Non-matching tweet:')
+      console.log(tweet.text)
+      console.log()
     }
   }
 
