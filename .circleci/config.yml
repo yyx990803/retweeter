@@ -37,7 +37,7 @@ workflows:
     triggers:
       - schedule:
           # Every 10 münutes
-          cron: "*/10 * * * *"
+          cron: "10,20,30,40,50,59 * * * *"
           filters:
             branches:
               only:
