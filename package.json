@@ -1,4 +1,26 @@
 {
+  "name": "auto-retweet",
+  "version": "1.0.0",
+  "description": "Auto RT things posted by specified accounts on Twitter.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/sethetter/auto-retweet.git"
+  },
+  "keywords": [
+    "twitter",
+    "retweet"
+  ],
+  "author": "Seth Etter <sethetter@gmail.com> (http://sethetter.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sethetter/auto-retweet/issues"
+  },
+  "homepage": "https://github.com/sethetter/auto-retweet#readme",
   "dependencies": {
     "dotenv": "^6.2.0",
     "twitter": "^1.7.1"
