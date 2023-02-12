@@ -1,5 +1,5 @@
 {
-  "name": "auto-retweet",
+  "name": "retweeter",
   "version": "1.0.0",
   "description": "Auto RT things posted by specified accounts on Twitter.",
   "main": "index.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/sethetter/auto-retweet.git"
+    "url": "git+ssh://git@github.com/yyx990803/retweeter.git"
   },
   "keywords": [
     "twitter",
@@ -18,9 +18,9 @@
   "author": "Seth Etter <sethetter@gmail.com> (http://sethetter.com)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sethetter/auto-retweet/issues"
+    "url": "https://github.com/yyx990803/retweeter/issues"
   },
-  "homepage": "https://github.com/sethetter/auto-retweet#readme",
+  "homepage": "https://github.com/yyx990803/retweeter#readme",
   "dependencies": {
     "dotenv": "^6.2.0",
     "twitter": "^1.7.1"
