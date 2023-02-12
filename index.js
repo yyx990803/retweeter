@@ -21,7 +21,9 @@ async function retweet(username, regex) {
   })
 
   let hasMatch = false
-  for (const tweet of latest) {
+  latest.map(async (tweet, i) => {
+
+    console.log(tweet)
     if (regex.test(tweet.full_text)) {
       hasMatch = true
       console.log()
@@ -32,26 +34,33 @@ async function retweet(username, regex) {
         id: tweet.id_str
       })
       console.log()
-      await client.post(`/statuses/retweet/${tweet.id_str}`, {})
-      break
+
+      await client.post(`/statuses/retweet/${tweet.id_str}`, {}).catch((e) => {
+        console.log(e)
+      })
+
     } else if (!process.env.CI) {
       console.log()
       console.log('Non-matching tweet:')
-      console.log(tweet.full_text)
+      console.log(tweet)
       console.log()
     }
-  }
+
+  })
+
 
   if (!hasMatch) {
     console.log(`No matching tweets from @${username} with regex ${regex.source}.`)
   }
 }
 
-;(async () => {
+; (async () => {
   let hasError = false
   for (let i = 0; i < usernames.length; i++) {
     try {
+      console.log('Start time:', Date.now())
       await retweet(usernames[i], regexes[i])
+      console.log('Finish time:', Date.now())
     } catch (e) {
       if (!Array.isArray(e) || e[0].code !== 327) {
         console.log('Error encountered!')
